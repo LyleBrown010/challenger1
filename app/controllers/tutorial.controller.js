@@ -51,7 +51,21 @@ exports.findAllPublished = (req, res) => {
 
 // Find a single Tutorial with a id
 exports.findOne = (req, res) => {
-
+    Tutorial.findById(req.params.id, (err, data) => {
+        if(err){
+            if(err.kind === "not_found"){
+                res.status(404).send({
+                    message: `not found tutorial with id ${req.params.id}.`
+                });
+            }
+            else{
+                res.status(500).send({
+                    message: "Error retrieving Tutorial with id" + req.params.id
+                });
+            }
+        }
+        else res.send(data); 
+    });
 };
 
 // find all published Tutorials
